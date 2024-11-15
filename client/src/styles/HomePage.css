@@ -1,0 +1,147 @@
+/* HomePage.css */
+
+.logo-image {
+  width: 200px; /* Adjust the width as needed */
+  height: auto;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body, html {
+    font-family: Arial, sans-serif;
+    color: #333;
+    height: 100%;
+    overflow-x: hidden;
+  }
+  
+  .homepage {
+    /* background-image: url('../components/doc.jpg'); /* Ensure the path is correct */
+    background-size: cover;
+    background-color: white;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: #333;
+  }
+  
+  .header {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .logo-container {
+    display: flex;
+    align-items: center;
+    color: #fff;
+  }
+  
+  .edoc-logo {
+    font-size: 2em;
+    font-weight: bold;
+    color: #f44336;
+  }
+  
+  .edoc-logo-sub {
+    margin-left: 10px;
+    font-size: 1em;
+    color: #ffffffb3;
+  }
+  
+  .main-content {
+    text-align: center;
+    padding: 40px 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .heading-text {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .sub-text {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  
+  .sub-text2 {
+    font-size: 1em;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    max-width: 600px;
+  }
+  
+  .button-group {
+    margin-top: 20px;
+  }
+  
+  .button-link {
+    text-decoration: none;
+  }
+  
+  .btn-primary, .btn-secondary {
+    padding: 12px 24px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    display: inline-block;
+    margin: 5px;
+  }
+  
+  .btn-primary {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background-color: #45a049;
+  }
+  
+  .btn-secondary {
+    background-color: #008CBA;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #007bb5;
+  }
+  
+  .login-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .footer {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 10px 0;
+    text-align: center;
+  }
+  
+  .footer-text {
+    color: #fff;
+    font-size: 1em;
+  }
+  
