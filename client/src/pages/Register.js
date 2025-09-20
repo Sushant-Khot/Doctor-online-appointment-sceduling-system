@@ -1,7 +1,7 @@
 import React from 'react';
-import { Form, Input, Select, Button,message } from 'antd'; // Import Select and Button
+import { Form, Input, Select, Button, message } from 'antd';
 import '../styles/RegisterStyles.css';
-import axios from 'axios';
+import api from '../utils/api';
 import { Link, useNavigate } from 'react-router-dom';
 
 const { Option } = Select; // Destructure Option from Select
@@ -11,11 +11,11 @@ const Register = () => {
 
   const onFinishHandler = async (values) => {
     try {
-      const res=await axios.post('/api/auth/register', {
+      const res = await api.post('/auth/register', {
         username: values.name,
         email: values.email,
         password: values.password,
-        role: values.role, // Capture the role from the form values
+        role: values.role,
       });
       if(res.data.success){
       message.success('Registration successful');

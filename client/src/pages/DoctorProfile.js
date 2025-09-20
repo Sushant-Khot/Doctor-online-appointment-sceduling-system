@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../utils/api';
 import { Button, Table, Popconfirm, message } from 'antd';
 
 const DoctorProfilePage = () => {
@@ -12,14 +12,7 @@ const DoctorProfilePage = () => {
   useEffect(() => {
     const fetchDoctorInfo = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-        const response = await axios.get('http://localhost:8080/api/doctorRoute/me', config);
-        console.log('Doctor Info Response:', response.data);
+        const response = await api.get('/doctorRoute/me');
         setDoctorInfo(response.data);
       } catch (error) {
         console.error('Error fetching doctor info:', error);
@@ -32,20 +25,11 @@ const DoctorProfilePage = () => {
 
   
 
-  // Fetch appointments based on logged-in patient ID
+  // Fetch appointments based on logged-in doctor ID
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-        
-        // Change: Include patient ID in the appointment fetch request
-        const doctorId = doctorInfo?.id; // Get patient ID from patientInfo
-        const response = await axios.get(`http://localhost:8080/api/appointments/Doctor`, config);
+        const response = await api.get('/appointments/Doctor');
         setAppointments(response.data);
       } catch (error) {
         console.error('Error fetching appointments:', error);
@@ -53,15 +37,15 @@ const DoctorProfilePage = () => {
       }
     };
 
-    if (doctorInfo) { // Change: Ensure patientInfo is available before fetching appointments
+    if (doctorInfo) {
       fetchAppointments();
     }
-  }, [doctorInfo]); // Change: Add patientInfo as a dependency
+  }, [doctorInfo]);
 
   // Update appointment status
   const updateAppointmentStatus = async (appointmentId, status) => {
     try {
-      const response = await axios.put(`/api/appointments/${appointmentId}/status`, { status });
+      await api.put(`/appointments/${appointmentId}/status`, { status });
       message.success(`Appointment ${status} successfully`);
       setAppointments(appointments.map((appt) =>
         appt.id === appointmentId ? { ...appt, status } : appt
@@ -74,18 +58,10 @@ const DoctorProfilePage = () => {
   // Delete profile
   const deleteProfile = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const response = await axios.delete(`http://localhost:8080/api/auth/profile`, config);
-      console.log('Delete response:', response); // Log success response if it occurs
+      await api.delete('/auth/profile');
       message.success('Profile deleted successfully');
       navigate('/');
     } catch (error) {
-      console.log('Delete error response:', error.response); // Log error response for debugging
       if (error.response && error.response.status === 400) {
         message.error(error.response.data.message);
       } else {

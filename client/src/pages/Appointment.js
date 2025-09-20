@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'; // Importing useEffect and useState
+import React, { useEffect, useState } from 'react';
 import { Form, Input, Select, Button, DatePicker, message } from 'antd';
-import axios from 'axios';
+import api from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Appointment.css';
 
@@ -20,14 +20,7 @@ const Appointment = () => {
   useEffect(() => {
     const fetchPatientInfo = async () => {
       try {
-        const token = localStorage.getItem('token');  // Get the token from local storage
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,  // Include token in the Authorization header
-          },
-        };
-        const response = await axios.get('http://localhost:8080/api/auth/getUserData', config);  // Use GET instead of POST for fetching data
-        console.log('Patient Info Response:', response.data); // Log the response data
+        const response = await api.get('/auth/getUserData');
         setPatientInfo(response.data); 
       } catch (error) {
         console.error('Error fetching patient info:', error);
@@ -42,7 +35,7 @@ const Appointment = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/doctors'); // Adjust to your endpoint
+        const response = await api.get('/doctors');
         setDoctors(response.data);
       } catch (error) {
         console.error('Error fetching doctors:', error);
@@ -63,14 +56,14 @@ const Appointment = () => {
     try {
       const selectedDoctor = filteredDoctors.find(doctor => doctor.id === values.doctor);
 
-      await axios.post('http://localhost:8080/api/appointments', {
-        patient_id: patientInfo ? patientInfo.id : values.user, // Replace with actual patient ID if available
+      await api.post('/appointments', {
+        patient_id: patientInfo ? patientInfo.id : values.user,
         doctor_id: values.doctor,
         patient_name: values.name,
         email: values.email,
         mobile: values.phone,
         appointment_date: values.date.format('YYYY-MM-DD'),
-        timeslot: values.timeslot, // Add timeslot to request payload
+        timeslot: values.timeslot,
         specialization: values.specialization,
         doctor_name: selectedDoctor ? selectedDoctor.name : '',
         status: 'Pending',

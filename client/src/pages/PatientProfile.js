@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../utils/api';
 import { Button, Table, Popconfirm, message } from 'antd';
 
 const PatientProfilePage = () => {
@@ -13,14 +13,7 @@ const PatientProfilePage = () => {
   useEffect(() => {
     const fetchPatientInfo = async () => {
       try {
-        const token = localStorage.getItem('token');  // Get the token from local storage
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,  // Include token in the Authorization header
-          },
-        };
-        const response = await axios.get('http://localhost:8080/api/auth/getUserData', config);  // Use GET instead of POST for fetching data
-        console.log('Patient Info Response:', response.data); // Log the response data
+        const response = await api.get('/auth/getUserData');
         setPatientInfo(response.data); 
       } catch (error) {
         console.error('Error fetching patient info:', error);
@@ -35,16 +28,7 @@ const PatientProfilePage = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-        
-        // Change: Include patient ID in the appointment fetch request
-        const patientId = patientInfo?.id; // Get patient ID from patientInfo
-        const response = await axios.get(`http://localhost:8080/api/appointments/patient`, config);
+        const response = await api.get('/appointments/patient');
         setAppointments(response.data);
       } catch (error) {
         console.error('Error fetching appointments:', error);
@@ -52,16 +36,16 @@ const PatientProfilePage = () => {
       }
     };
 
-    if (patientInfo) { // Change: Ensure patientInfo is available before fetching appointments
+    if (patientInfo) {
       fetchAppointments();
     }
-  }, [patientInfo]); // Change: Add patientInfo as a dependency
+  }, [patientInfo]);
 
   // Fetch doctors
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/doctors');
+        const response = await api.get('/doctors');
         setDoctors(response.data);
       } catch (error) {
         console.error('Error fetching doctors:', error);
@@ -75,7 +59,7 @@ const PatientProfilePage = () => {
   // Delete an appointment
   const deleteAppointment = async (appointmentId) => {
     try {
-      await axios.delete(`/api/appointments/${appointmentId}`);
+      await api.delete(`/appointments/${appointmentId}`);
       message.success('Appointment deleted successfully');
       setAppointments(appointments.filter((appt) => appt.id !== appointmentId));
     } catch (error) {
@@ -86,15 +70,7 @@ const PatientProfilePage = () => {
   // Delete profile
   const deleteProfile = async () => {
     try {
-      const token = localStorage.getItem('token'); // Fetch token
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`, // Pass token
-        },
-      };
-  
-      // Include the base URL and config
-      await axios.delete(`http://localhost:8080/api/auth/profile`, config);
+      await api.delete('/auth/profile');
       message.success('Profile deleted successfully');
       navigate('/');
     } catch (error) {

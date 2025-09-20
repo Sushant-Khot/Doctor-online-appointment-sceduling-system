@@ -1,19 +1,18 @@
-import React, { useState } from 'react'; // Import useState for loading state
-import { Form, Input,message } from 'antd';
+import React, { useState } from 'react';
+import { Form, Input, message } from 'antd';
 import '../styles/LoginStyles.css';
-import axios from 'axios';
+import api from '../utils/api';
 import { Link, useNavigate } from 'react-router-dom';
 const LoginPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // State to track loading
 
   const onFinishHandler = async (values) => {
-    console.log(values); // Debug: Log the values submitted
-    setLoading(true); // Set loading state to true
+    setLoading(true);
 
     try {
       // Attempt to log in
-      const res = await axios.post('/api/auth/login', values);
+      const res = await api.post('/auth/login', values);
 
       if (res.data.success) {
         // Store the JWT token
